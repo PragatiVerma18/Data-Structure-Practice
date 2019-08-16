@@ -14,6 +14,12 @@ struct node *insert_beg(struct node *);
 struct node *insert_end(struct node *);
 struct node *insert_before(struct node *);
 struct node *insert_after(struct node *);
+struct node *delete_beg(struct node *);
+struct node *delete_end(struct node *);
+struct node *delete_node(struct node *);
+struct node *delete_before(struct node *);
+struct node *delete_after(struct node *);
+struct node *delete_list(struct node *);
 
 int main()
 {
@@ -26,6 +32,12 @@ int main()
 		printf("\n 4: Insert an element at end of the list");
 		printf("\n 5: Insert an element before an element of the list");
 		printf("\n 6: Insert an element after an element of the list");
+		printf("\n 7: Delete an element at beginning of the list");
+		printf("\n 8: Delete an element at end of the list");
+		printf("\n 9: Delete an element of the list");
+		printf("\n 10: Delete an element before an element of the list");
+		printf("\n 11: Delete an element after an element of the list");
+		printf("\n 12: Delete entire list");
 		printf("\n 13: Exit");
 		printf("\n\n Enter your choice");
 		scanf("%d",&c);
@@ -42,6 +54,13 @@ int main()
 			break;
 			case 5: start = insert_before(start); break;
 			case 6: start = insert_after(start); break;
+			case 7: start = delete_beg(start); break;
+			case 8: start = delete_end(start); break;
+			case 9: start = delete_node(start); break;
+			case 10: start = delete_before(start); break;
+			case 11: start = delete_after(start); break;
+			case 12: start = delete_list(start); break;
+			
 		}
 	}while(c!=13);
 	getch();
@@ -164,5 +183,91 @@ struct node *insert_after(struct node *start)
 	}
 	preptr->next = new_node;
 	new_node -> next = ptr;
+	return start;
+}
+
+struct node *delete_beg(struct node *start)
+{
+	struct node *ptr;
+	ptr = start;
+	start = start->next;
+	free(ptr);
+	return start;
+}
+
+struct node *delete_end(struct node *start)
+{
+	struct node *ptr, *preptr;
+	ptr= start; preptr = ptr;
+	while(ptr->next != NULL)
+	{
+		preptr = ptr;
+		ptr = ptr->next;
+	}
+	preptr->next = NULL;
+	free(ptr);	
+	return start;
+}
+
+struct node *delete_node(struct node *start)
+{
+	struct node *ptr,*preptr;
+	ptr= start; preptr= ptr;
+	int val;
+	printf("\n enter val to be deleted");
+	scanf("%d",&val);
+	if(ptr->data == val)
+	{
+		start = delete_beg(start);
+		return start;
+	}
+	else{
+		while(ptr->data != val)
+		{
+			preptr = ptr;
+			ptr = ptr->next;
+		}
+		preptr->next = ptr->next;
+		free(ptr);
+		return start;
+	}
+}
+
+struct node *delete_before(struct node *start)
+{
+	printf("\n not possible");
+}
+
+struct node *delete_after(struct node *start)
+{
+	struct node *ptr,*preptr;
+	ptr= start; preptr= ptr;
+	int val;
+	printf("\n enter val after which element is to be deleted");
+	scanf("%d",&val);
+		while(preptr->data != val)
+		{
+			preptr = ptr;
+			ptr = ptr->next;
+		}
+		preptr->next = ptr->next;
+		free(ptr);
+		return start;
+}
+
+struct node *delete_list(struct node *start)
+{
+	struct node *ptr;
+	if(start!= NULL)
+	{
+		ptr = start;
+		while(ptr!= NULL)
+		{
+			printf("\n element to be deleted next is %d", ptr->data);
+			start = delete_beg(start);
+			ptr = start;
+		}
+		
+	}
 	return start;
 }
